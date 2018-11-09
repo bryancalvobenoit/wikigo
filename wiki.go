@@ -26,7 +26,7 @@ func loadPage(title string) (*Page, error) {
 	}
 	return &Page{Title: title, Body: body}, nil
 }
-
+/*Handlers*/
 func viewHandler(w http.ResponseWriter, r *http.Request, title string) {
 	p, err := loadPage(title)
 	if err != nil {
@@ -56,7 +56,7 @@ func saveHandler(w http.ResponseWriter, r *http.Request, title string) {
 }
 
 var templates = template.Must(template.ParseFiles("edit.html", "view.html"))
-
+/* Using Templates for response*/
 func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
 	err := templates.ExecuteTemplate(w, tmpl+".html", p)
 	if err != nil {
@@ -65,7 +65,7 @@ func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
 }
 
 var validPath = regexp.MustCompile("^/(edit|save|view)/([a-zA-Z0-9]+)$")
-
+/* Function Literal to handel errors*/
 func makeHandler(fn func(http.ResponseWriter, *http.Request, string)) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		m := validPath.FindStringSubmatch(r.URL.Path)
